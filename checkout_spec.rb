@@ -1,11 +1,11 @@
-load 'Checkout.rb'
+require './Checkout.rb'
 
 describe Checkout do
   subject {Checkout.new(
       'F' => Rule.new(50, '3 for 130'),
-      'D' => Rule.new(15, ''),
+      'D' => Rule.new(15),
       'B' => Rule.new(30, '2 for 45'),
-      'A' => Rule.new(50, '')
+      'A' => Rule.new(50)
   )}
 
   it "prices a D item correctly" do
