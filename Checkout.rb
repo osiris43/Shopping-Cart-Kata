@@ -15,8 +15,7 @@ class Checkout
   end
 
   def special?(item, rule)
-    return false unless rule.special_price
-    @receipt[item].remainder(rule.special_count) == 0
+    rule.special_price && @receipt[item].remainder(rule.special_count) == 0
   end
 end
 
