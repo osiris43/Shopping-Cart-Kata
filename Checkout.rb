@@ -7,20 +7,17 @@ class Checkout
     @receipt = Hash.new(0) 
   end
 
-  def scan(item)
-    return unless @rules.has_key?(item)
-    @receipt[item] += 1
-    rule = @rules[item]
-    @total += special?(item, rule) ? rule.discount : rule.unit_price
-  end
-
-  def special?(item, rule)
-    rule.special_price && @receipt[item].remainder(rule.special_count) == 0
+  def scan(items)
+    items.each_char do |item|
+      return unless @rules.has_key?(item)
+      @receipt[item] += 1
+      @total += @rules[item].price(@receipt[item])
+    end
+    @total
   end
 end
 
 class Rule
-  attr_accessor :unit_price, :special_count, :special_price
 
   def initialize(unit_price,special_description = nil)
     @unit_price = unit_price
@@ -28,11 +25,15 @@ class Rule
     if special_description
       special_count, dummy, special_price = special_description.split(' ')
       @special_count = special_count.to_i
-      @special_price = special_price.to_i
+      @discount = special_price.to_i - (@special_count - 1) * unit_price
     end
   end
 
-  def discount
-    @special_price - (@special_count - 1) * @unit_price
+  def discount?(running_count)
+    @discount && running_count.remainder(@special_count) == 0
+  end
+
+  def price(running_count)
+    discount?(running_count) ? @discount : @unit_price
   end
 end

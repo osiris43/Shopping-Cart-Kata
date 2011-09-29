@@ -9,13 +9,11 @@ describe Checkout do
   )}
 
   it "prices a D item correctly" do
-    subject.scan('D')
-    subject.total.should == 15
+    subject.scan('D').should == 15
   end 
 
   it "prices empty cart correctly" do
-    subject.scan('')
-    subject.total.should == 0
+    subject.scan('').should == 0
   end 
 
   it "prices an A item correctly" do
