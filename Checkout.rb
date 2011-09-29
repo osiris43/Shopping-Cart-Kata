@@ -8,28 +8,15 @@ class Checkout
   end
 
   def scan(item)
-    if !@rules.has_key?(item)
-      return
-    else
-      @receipt[item] += 1
-      
-      rule = @rules[item]
-
-      if check_special?(item, rule)
-        add_special(item, rule)
-      else
-        @total += rule.unit_price
-      end
-    end
+    return unless @rules.has_key?(item)
+    @receipt[item] += 1
+    rule = @rules[item]
+    special?(item, rule) ? add_special(item, rule) : @total += rule.unit_price
   end
 
-  def check_special?(item, rule)
-    if rule.special_price.nil?
-      return false
-    end
-
+  def special?(item, rule)
+    return false unless rule.special_price
     @receipt[item].remainder(rule.special_count) == 0
-    
   end
 
   def add_special(item, rule)
