@@ -17,51 +17,30 @@ describe Checkout do
   end 
 
   it "prices an A item correctly" do
-    subject.scan('A')
-    subject.total.should == 50
+    subject.scan('A').should == 50
   end
 
   it "prices two items correctly" do
-    subject.scan('A')
-    subject.scan('A')
-    subject.total.should == 100
+    subject.scan('AA').should == 100
   end
 
   it "prices two items correctly" do
-    subject.scan('A')
-    subject.scan('B')
-    subject.total.should == 80
+    subject.scan('AB').should == 80
   end
 
   it "prices special price for one item correctly" do
-    subject.scan('F')
-    subject.scan('F')
-    subject.scan('F')
-
-    subject.total.should ==130
+    subject.scan('FFF').should ==130
   end
 
   it "prices special price for one item correctly" do
-    6.times { subject.scan('F')}
-    subject.total.should ==260
+    subject.scan('FFFFFF').should ==260
   end
   
   it "prices special price for multiple items correctly" do
-    subject.scan('F')
-    subject.scan('F')
-    subject.scan('F')
-    subject.scan('B')
-
-    subject.total.should == 160
+    subject.scan('FFFB').should == 160
   end
 
   it "prices for multiple specials" do
-    subject.scan('F')
-    subject.scan('F')
-    subject.scan('F')
-    subject.scan('B')
-    subject.scan('B')
-
-    subject.total.should == 175 
+    subject.scan('FFFBB').should == 175 
   end
 end
